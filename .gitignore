@@ -1,0 +1,18 @@
+# ignore secrets files
+*.env
+.env
+
+# Ignore databasesy
+**/influxdb/
+**/grafana/
+**/prometheus_data/
+**/matter_data/
+**/mosquitto/data/
+**/mosquitto/log/
+**/zigbee2mqtt/data/
+
+# expects config files
+!**/mosquitto/config/
+!**/prometheus_config/
+!**/zigbee2mqtt/data/*.yaml
+!**/zigbee2mqtt/data/*.json
