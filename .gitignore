@@ -76,6 +76,17 @@ volumes/
 docker-compose*.log
 docker-compose.override.*.yml
 
+# Home Assistant runtime / sensitive data
+automation/homeassistant/config/.storage/
+automation/homeassistant/config/secrets.yaml
+automation/homeassistant/config/home-assistant_v2.db
+automation/homeassistant/config/home-assistant_v2.db-*
+automation/homeassistant/config/*.log
+automation/homeassistant/config/backup/
+automation/homeassistant/config/backups/
+automation/homeassistant/config/deps/
+automation/homeassistant/config/tts/
+
 # -------------------------
 # Keys, credentials, DB dumps
 # -------------------------
