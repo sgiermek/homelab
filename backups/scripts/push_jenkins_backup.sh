@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# backup_jenkins_push.sh
+# push_jenkins_backup.sh
 # Backs up Jenkins data using shared create_backup function.
 
 # Source the shared backup library

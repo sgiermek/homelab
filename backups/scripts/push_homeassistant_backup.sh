@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# push_ha_backup.sh
+# push_homeassistant_backup.sh
 # Backs up Home Assistant data using shared create_backup function.
 
 # Source the shared backup library

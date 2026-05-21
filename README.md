@@ -26,7 +26,7 @@ Backups
 - Keep small restore/backup scripts in scripts/ but do not store backups in repo.
 
 Backup scripts
-- Example backup scripts are under `backups/scripts/` (e.g. `push_ha_backup.sh`, `backup_jenkins_push.sh`).
+- Example backup scripts are under `backups/scripts/` (e.g. `push_ha_backup.sh`, `push_jenkins_backup.sh`).
 - Each script uses a shared function-style structure (create_backup) that:
   - copies container data safely to a temporary directory using `docker cp`,
   - compresses the contents into a timestamped tar.gz archive,
@@ -34,14 +34,14 @@ Backup scripts
   - uploads the archive to an `rclone` remote and optionally prunes remote older files.
 - To run a script (example):
 ```bash
-sudo bash backups/scripts/push_ha_backup.sh
-sudo bash backups/scripts/backup_jenkins_push.sh
+sudo bash backups/scripts/push_homeassistant_backup.sh
+sudo bash backups/scripts/push_jenkins_backup.sh
 ```
 
 Configuration & overrides
 - Scripts support simple environment variable overrides, for example:
 ```bash
-BACKUP_DIR=/opt/homelab/backups/jenkins RETAIN_LOCAL_DAYS=7 bash backups/scripts/backup_jenkins_push.sh
+BACKUP_DIR=/opt/homelab/backups/jenkins RETAIN_LOCAL_DAYS=7 bash backups/scripts/push_jenkins_backup.sh
 ```
 
 

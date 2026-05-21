@@ -1,0 +1,3 @@
+[submodule "app/local-page/app"]
+	path = app/local-page/app
+	url = git@github.com:sgiermek/local-page.git
