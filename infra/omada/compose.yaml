@@ -1,6 +1,6 @@
 services:
   omada-controller:
-    image: mbentley/omada-controller:6.2.0.17
+    image: mbentley/omada-controller:6.2.10.17
     container_name: omada-controller
     restart: unless-stopped
     network_mode: host
