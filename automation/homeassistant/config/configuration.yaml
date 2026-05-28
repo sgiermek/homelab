@@ -1,0 +1,56 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+template: !include templates.yaml
+
+
+influxdb:
+  include:
+    entities:
+      - sensor.th_01_temperature
+      - sensor.th_02_temperature
+      - sensor.th_03_temperature
+      - sensor.th_04_temperature
+      - sensor.th_05_temperature
+      - sensor.th_06_temperature
+      - sensor.th_07_temperature
+      - sensor.th_11_temperature
+
+
+#counter:
+#  kotlownia_gryzonie:
+#    name: Kotlownia Gryzonie
+#    initial: 0
+#    step: 1
+#
+#
+#sensor:
+#  - platform: history_stats
+#    name: Kotlownia ruch 72h
+#    entity_id: binary_sensor.md_01_occupancy
+#    state: "on"
+#    type: count
+#    end: "{{ now() }}"
+#    duration:
+#      hours: 72
+
+
+shell_command:
+  oppo_adb_connect: >
+    adb connect 192.168.10.140:38087
+
+  oppo_screen_on: >
+    adb -s 192.168.10.140:38087 shell input keyevent 26
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.10.10
+    - 172.16.0.0/12

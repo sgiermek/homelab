@@ -1,0 +1,46 @@
+- sensor:
+    - name: "Rekuperator Sprawnosc Temperaturowa"
+      unique_id: rekuperator_sprawnosc_temperaturowa
+      unit_of_measurement: "%"
+      state: >
+        {% set t_c = states('sensor.th_11_temperature') | float(0) %}
+        {% set t_n = states('sensor.th_02_temperature') | float(0) %}
+        {% set t_w = states('sensor.th_03_temperature') | float(0) %}
+
+        {% if t_c != 0 and t_w != t_c %}
+          {{ ((t_n - t_c) / (t_w - t_c) * 100) | round(1) }}
+        {% else %}
+          {{ none }}
+        {% endif %}
+
+    - name: "Rekuperator Sprawnosc Entalpiczna"
+      unique_id: rekuperator_sprawnosc_entalpiczna
+      unit_of_measurement: "%"
+      state: >
+        {% set P = 101.325 %}
+
+        {% set Tc = states('sensor.th_11_temperature') | replace(',', '.') | float(0) %}
+        {% set Tn = states('sensor.th_02_temperature') | replace(',', '.') | float(0) %}
+        {% set Tw = states('sensor.th_03_temperature') | replace(',', '.') | float(0) %}
+
+        {% set RHc = (states('sensor.th_11_humidity') | replace(',', '.') | float(0)) / 100 %}
+        {% set RHn = (states('sensor.th_02_humidity') | replace(',', '.') | float(0)) / 100 %}
+        {% set RHw = (states('sensor.th_03_humidity') | replace(',', '.') | float(0)) / 100 %}
+
+        {% set es_c = 0.61078 * (2.718281828 ** (17.27 * Tc / (Tc + 237.3))) %}
+        {% set es_n = 0.61078 * (2.718281828 ** (17.27 * Tn / (Tn + 237.3))) %}
+        {% set es_w = 0.61078 * (2.718281828 ** (17.27 * Tw / (Tw + 237.3))) %}
+
+        {% set Wc = 0.622 * (RHc * es_c) / (P - (RHc * es_c)) %}
+        {% set Wn = 0.622 * (RHn * es_n) / (P - (RHn * es_n)) %}
+        {% set Ww = 0.622 * (RHw * es_w) / (P - (RHw * es_w)) %}
+
+        {% set hc = 1.006*Tc + Wc*(2501 + 1.86*Tc) %}
+        {% set hn = 1.006*Tn + Wn*(2501 + 1.86*Tn) %}
+        {% set hw = 1.006*Tw + Ww*(2501 + 1.86*Tw) %}
+
+        {% if (hw - hc) != 0 %}
+          {{ ((hn - hc) / (hw - hc) * 100) | round(1) }}
+        {% else %}
+          {{ none }}
+        {% endif %}
