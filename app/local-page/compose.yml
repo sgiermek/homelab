@@ -1,10 +1,9 @@
 services:
   local_page:
-    image: nginx:alpine
+    build: .
     container_name: local-page-nginx
     restart: unless-stopped
     ports:
       - "8081:80"
     volumes:
-      - ./app:/usr/share/nginx/html:ro
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./app/links.txt:/usr/share/nginx/html/links.txt:ro
