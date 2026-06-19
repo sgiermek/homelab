@@ -47,7 +47,7 @@ portainer.lan {
 
 # Zigbee2MQTT (Docker DNS)
 zigbee.lan {
-    reverse_proxy zigbee2mqtt:8080
+    reverse_proxy zigbee2mqtt:8099
 }
 
 # SLZB-06M (device poza Dockerem)
