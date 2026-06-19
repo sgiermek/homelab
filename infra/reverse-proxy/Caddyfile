@@ -1,48 +1,56 @@
-#Local cert configuration
 {
     local_certs
 }
 
-#home page
-links.lan {
-    tls internal
-    reverse_proxy 192.168.10.10:8081
+# Homepage
+home.lan, homelab.lan, links.lan {
+    reverse_proxy homepage:3000
 }
 
-#jenkins
+# Jenkins (na razie host/IP)
 jenkins.lan {
-    tls internal
     reverse_proxy 192.168.10.10:8080
 }
 
-#home assistant
+# Home Assistant (na razie host/IP – host network)
 ha.lan {
-    tls internal
     reverse_proxy 192.168.10.10:8123
 }
 
-#omada
+# Omada (Docker DNS)
 omada.lan {
-    tls internal
-    reverse_proxy https://192.168.10.10:8043 {
+    reverse_proxy omada-controller:8043 {
         transport http {
             tls_insecure_skip_verify
         }
     }
 }
 
-#grafana
+# Vault
+vault.lan {
+    reverse_proxy vaultwarden:80
+}
+
+# Grafana (do migracji później)
 grafana.lan {
-    tls internal
     reverse_proxy 192.168.10.10:3000
 }
 
-#portainer
+# Portainer (Docker DNS + TLS skip)
 portainer.lan {
-    tls internal
-    reverse_proxy https://192.168.10.10:9443 {
+    reverse_proxy https://portainer:9443 {
         transport http {
             tls_insecure_skip_verify
         }
     }
+}
+
+# Zigbee2MQTT (Docker DNS)
+zigbee.lan {
+    reverse_proxy zigbee2mqtt:8080
+}
+
+# SLZB-06M (device poza Dockerem)
+slzb.lan {
+    reverse_proxy 192.168.30.50
 }

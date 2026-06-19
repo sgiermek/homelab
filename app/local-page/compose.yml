@@ -1,9 +1,0 @@
-services:
-  local_page:
-    build: .
-    container_name: local-page-nginx
-    restart: unless-stopped
-    ports:
-      - "8081:80"
-    volumes:
-      - ./app/links.txt:/usr/share/nginx/html/links.txt:ro

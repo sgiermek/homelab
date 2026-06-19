@@ -1,62 +1,45 @@
 
 # -------------------------
 # Top-level general ignores
-# -------------------------
-
 # system files
 .DS_Store
 Thumbs.db
 desktop.ini
-
 # macOS resource fork files
 ._*
 ._.DS_Store
-
 # editor/IDE
 .vscode/
 .idea/
 *.swp
 *~
 *.iml
-
 # temp/cache
 *.cache
 .cache/
 *.bak
-
-# -------------------------
 # Language / runtime
-# -------------------------
-
 # Python
 __pycache__/
 *.pyc
 *.pyo
-
 # Node
 node_modules/
-
 # Build artifacts
 dist/
 build/
 out/
-
-# -------------------------
 # Docker / env / runtime data
-# -------------------------
-
 # environment files (keep examples like .env.example)
 *.env
 .env
 .env.*.local
 .env.local
 .envrc
-
 # local docker-compose overrides and local compose files
 docker-compose.override.yml
 **/docker-compose.override.yml
 **/docker-compose.*.local.yml
-
 # Common runtime/data directories inside repo (adjust to your layout)
 data/
 var/
@@ -69,13 +52,11 @@ volumes/
 **/influxdb/
 **/grafana/plugins/
 **/grafana/data/
-
 # Docker generated / logs
 *.log
 *.log.gz
 docker-compose*.log
 docker-compose.override.*.yml
-
 # Home Assistant runtime / sensitive data
 automation/homeassistant/config/.storage/
 automation/homeassistant/config/secrets.yaml
@@ -86,11 +67,7 @@ automation/homeassistant/config/backup/
 automation/homeassistant/config/backups/
 automation/homeassistant/config/deps/
 automation/homeassistant/config/tts/
-
-# -------------------------
 # Keys, credentials, DB dumps
-# -------------------------
-
 *.pem
 *.key
 *.crt
@@ -100,12 +77,10 @@ automation/homeassistant/config/tts/
 secrets/
 credentials/
 aws-credentials/
-
 # SSH
 .ssh/
 id_rsa
 id_rsa.pub
-
 # Databases / dumps
 *.sqlite
 *.db
@@ -113,29 +88,22 @@ id_rsa.pub
 dump.sql
 *.sql.gz
 *.sqlite3
-
-# -------------------------
 # Project-specific/ignored folders already in repo
-# -------------------------
-
 # keep config templates and examples but ignore runtime/data for services
 !**/mosquitto/config/
 !**/prometheus_config/
 !**/zigbee2mqtt/data/*.yaml
 !**/zigbee2mqtt/data/*.json
-
 # existing service data dirs (keep these ignored)
 **/matter_data/
 **/mosquitto/data/
 **/mosquitto/log/
 **/zigbee2mqtt/data/
-
 # omada and portainer dirs
 **/omada-data
 **/omada-logs
 **/omada-work
 **/portainer_data
-
 # backups and other large artifacts
 backups/**/*.bak.tar.gz
-
+app/local-page/

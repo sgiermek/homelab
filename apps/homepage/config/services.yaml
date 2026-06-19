@@ -1,0 +1,54 @@
+- Infrastructure:
+    - Homepage:
+        href: https://home.lan
+        icon: homepage.png
+
+    - Home Assistant:
+        href: https://ha.lan
+        icon: home-assistant.png
+
+    - Omada:
+        href: https://omada.lan
+        icon: omada.png
+
+    - Jenkins:
+        href: https://jenkins.lan
+        icon: jenkins.png
+
+
+- Monitoring & Observability:
+    - Grafana:
+        href: https://grafana.lan
+        icon: grafana.png
+        widget:
+          type: grafana
+          url: https://grafana.lan
+
+          username: {{HOMEPAGE_VAR_GRAFANA_USER}}
+          password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
+
+- Containers & DevOps:
+    - Portainer:
+        href: https://portainer.lan
+        icon: portainer.png
+        widget:
+          type: portainer
+          url: https://portainer.lan
+          env: 3
+          key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
+
+- IoT & Smart Home:
+    - Zigbee2MQTT:
+        href: https://zigbee.lan
+        icon: zigbee2mqtt.png
+
+    - SLZB-06M:
+        href: http://slzb.lan
+        icon: zigbee.png
+
+
+- Security:
+    - Vaultwarden:
+        href: https://vault.lan
+        icon: vaultwarden.png
+        description: Password manager

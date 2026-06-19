@@ -3,15 +3,33 @@ services:
     image: caddy:2.8
     container_name: reverse-proxy
     restart: unless-stopped
+
     ports:
       - "80:80"
       - "443:443"
-      - "443:443/udp" # Wsparcie dla HTTP/3
+      - "443:443/udp"
+
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
 
+    networks:
+      - homelab
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    labels:
+      - "com.docker.compose.project=reverse-proxy"
+
 volumes:
   caddy_data:
   caddy_config:
+
+networks:
+  homelab:
+    external: true
