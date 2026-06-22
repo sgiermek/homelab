@@ -1,0 +1,21 @@
+- Developer:
+    - GitHub:
+        - abbr: GH
+          href: https://github.com
+    - Linear:
+        - abbr: LN
+          href: https://linear.app
+
+- AI:
+    - OpenAI:
+        - abbr: OA
+          href: https://openai.com
+    - ChatGPT:
+        - abbr: GPT
+          href: https://chatgpt.com
+    - Claude:
+        - abbr: CL
+          href: https://claude.ai
+    - Gemini:
+        - abbr: GM
+          href: https://gemini.google.com

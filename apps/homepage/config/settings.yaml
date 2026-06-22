@@ -1,0 +1,12 @@
+title: Homelab
+theme: dark
+color: slate
+
+layout:
+  Infrastructure:
+    style: row
+    columns: 3
+
+  Applications:
+    style: row
+    columns: 3

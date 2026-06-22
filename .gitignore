@@ -1,0 +1,98 @@
+
+# -------------------------
+# Top-level general ignores
+# system files
+.DS_Store
+Thumbs.db
+desktop.ini
+# macOS resource fork files
+._*
+._.DS_Store
+# editor/IDE
+.vscode/
+.idea/
+*.swp
+*~
+*.iml
+# temp/cache
+*.cache
+.cache/
+*.bak
+# Language / runtime
+# Python
+__pycache__/
+*.pyc
+*.pyo
+# Node
+node_modules/
+# Build artifacts
+dist/
+build/
+out/
+# Docker / env / runtime data
+# environment files (keep examples like .env.example)
+*.env
+.env
+.env.*.local
+.env.local
+.envrc
+# local docker-compose overrides and local compose files
+docker-compose.override.yml
+**/docker-compose.override.yml
+**/docker-compose.*.local.yml
+# Common runtime/data directories inside repo (adjust to your layout)
+data/
+var/
+volumes/
+**/data/
+**/pgdata/
+**/mysql_data/
+**/postgres_data/
+**/mariadb/
+**/influxdb/
+**/grafana/plugins/
+**/grafana/data/
+# Docker generated / logs
+*.log
+*.log.gz
+docker-compose*.log
+docker-compose.override.*.yml
+# Home Assistant runtime / sensitive data
+automation/homeassistant/config/
+automation/homeassistant/mosquitto/
+# Keys, credentials, DB dumps
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.keystore
+secrets/
+credentials/
+aws-credentials/
+# SSH
+.ssh/
+id_rsa
+id_rsa.pub
+# Databases / dumps
+*.sqlite
+*.db
+*.sql
+dump.sql
+*.sql.gz
+*.sqlite3
+# existing service data dirs (keep these ignored)
+**/matter_data/
+**/mosquitto/data/
+**/mosquitto/log/
+**/zigbee2mqtt/data/
+# omada and portainer dirs
+**/omada-data
+**/omada-logs
+**/omada-work
+**/portainer_data
+# backups and other large artifacts
+backups/**/*.bak.tar.gz
+app/local-page/
+# tmp
+tmp/
