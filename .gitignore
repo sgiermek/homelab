@@ -58,15 +58,8 @@ volumes/
 docker-compose*.log
 docker-compose.override.*.yml
 # Home Assistant runtime / sensitive data
-automation/homeassistant/config/.storage/
-automation/homeassistant/config/secrets.yaml
-automation/homeassistant/config/home-assistant_v2.db
-automation/homeassistant/config/home-assistant_v2.db-*
-automation/homeassistant/config/*.log
-automation/homeassistant/config/backup/
-automation/homeassistant/config/backups/
-automation/homeassistant/config/deps/
-automation/homeassistant/config/tts/
+automation/homeassistant/config/
+automation/homeassistant/mosquitto/
 # Keys, credentials, DB dumps
 *.pem
 *.key
@@ -88,12 +81,6 @@ id_rsa.pub
 dump.sql
 *.sql.gz
 *.sqlite3
-# Project-specific/ignored folders already in repo
-# keep config templates and examples but ignore runtime/data for services
-!**/mosquitto/config/
-!**/prometheus_config/
-!**/zigbee2mqtt/data/*.yaml
-!**/zigbee2mqtt/data/*.json
 # existing service data dirs (keep these ignored)
 **/matter_data/
 **/mosquitto/data/
@@ -107,3 +94,5 @@ dump.sql
 # backups and other large artifacts
 backups/**/*.bak.tar.gz
 app/local-page/
+# tmp
+tmp/

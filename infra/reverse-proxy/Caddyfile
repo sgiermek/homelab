@@ -19,7 +19,7 @@ ha.lan {
 
 # Omada (Docker DNS)
 omada.lan {
-    reverse_proxy omada-controller:8043 {
+    reverse_proxy 192.168.10.10:8043 {
         transport http {
             tls_insecure_skip_verify
         }
@@ -54,3 +54,4 @@ zigbee.lan {
 slzb.lan {
     reverse_proxy 192.168.30.50
 }
+
