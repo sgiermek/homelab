@@ -1,7 +1,4 @@
 - Infrastructure:
-    - Homepage:
-        href: https://home.lan
-        icon: homepage.png
 
     - Home Assistant:
         href: https://ha.lan
