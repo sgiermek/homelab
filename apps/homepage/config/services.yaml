@@ -45,6 +45,11 @@
 
 
 - Security:
+    - Frigate:
+        href: https://frigate.lan
+        icon: frigate.png
+        description: NVR / detekcja obiektow
+
     - Vaultwarden:
         href: https://vault.lan
         icon: vaultwarden.png

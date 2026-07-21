@@ -1,0 +1,37 @@
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+    networks:
+      - homelab
+
+    # Sized for CPU detector at 320x320 + 1-2 cameras. Increase if you add cameras
+    # or see shared-memory errors in the logs.
+    shm_size: "128mb"
+
+    env_file:
+      - .env
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
+      - ./storage:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 268435456
+
+    ports:
+      # Authenticated Frigate UI/API - safe to expose. Proxied via frigate.lan too.
+      - "8971:8971"
+      # RTSP restream (go2rtc) - handy for testing a camera feed with VLC etc.
+      - "8554:8554"
+    # Deliberately NOT publishing 5000 (unauthenticated internal API) or 8555
+    # (WebRTC) - not needed for a single LAN camera behind Caddy.
+
+networks:
+  homelab:
+    external: true

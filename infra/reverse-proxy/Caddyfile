@@ -50,6 +50,15 @@ zigbee.lan {
     reverse_proxy zigbee2mqtt:8099
 }
 
+# Frigate (Docker DNS, self-signed TLS to Frigate's own auth proxy)
+frigate.lan {
+    reverse_proxy https://frigate:8971 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
 # SLZB-06M (device poza Dockerem)
 slzb.lan {
     reverse_proxy 192.168.30.50

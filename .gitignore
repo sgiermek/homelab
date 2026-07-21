@@ -96,3 +96,8 @@ backups/**/*.bak.tar.gz
 app/local-page/
 # tmp
 tmp/
+# Frigate runtime data - keep only config.yml, ignore everything else
+# generated under config/ (jwt secret, sqlite db, model cache, exports, ...)
+security/frigate/storage/
+security/frigate/config/*
+!security/frigate/config/config.yml
