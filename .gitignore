@@ -101,3 +101,9 @@ tmp/
 security/frigate/storage/
 security/frigate/config/*
 !security/frigate/config/config.yml
+
+# AdGuard Home runtime data - keep only compose.yaml, ignore generated state
+# (confdir/AdGuardHome.yaml holds the admin password hash + live filter/rewrite
+# state; workdir holds query log, stats, downloaded filter lists - root-owned)
+infra/ad-guard-home/confdir/
+infra/ad-guard-home/workdir/
