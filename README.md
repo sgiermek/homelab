@@ -36,7 +36,8 @@ must never be committed.
 | Docker | Container runtime |
 | Docker Compose | Service orchestration |
 | Caddy | Reverse proxy + internal TLS |
-| dnsmasq | Local DNS resolver |
+| dnsmasq | Local DNS resolver (`.lan` wildcard, DHCP-facing DNS) |
+| AdGuardHome | DNS-level ad/tracker filtering (upstream of dnsmasq) |
 | Homepage | Service dashboard |
 | Portainer | Docker management |
 | Grafana | Monitoring and dashboards |
@@ -135,6 +136,34 @@ Test:
 
 ```bash
 resolvectl query vault.lan
+```
+
+## Upstream / Ad-Blocking
+
+dnsmasq owns port 53 and stays the single DNS entry point for the LAN (DHCP hands out `192.168.10.10` as primary DNS). Everything that isn't `.lan` is forwarded to AdGuardHome instead of going straight to a public resolver:
+
+```ini
+server=192.168.10.10#55
+```
+
+AdGuardHome (Docker, `network_mode: host`) listens on port `55` (not `53`, since dnsmasq already owns that port on the host) and forwards filtered queries upstream to Quad9 over DoH.
+
+Resulting chain:
+
+```text
+client -> dnsmasq (192.168.10.10:53) -> .lan? -> answer locally
+                                      -> else  -> AdGuardHome (192.168.10.10:55) -> Quad9 (DoH)
+```
+
+Known limitation: AdGuardHome sees all forwarded queries as coming from dnsmasq, not the original client IP, so its per-device stats/dashboard aren't meaningful — filtering itself is unaffected.
+
+Resilience: Omada DHCP is configured with a secondary DNS server (`1.1.1.1`) so LAN clients still get (unfiltered) DNS if `dusty` is down.
+
+Test:
+
+```bash
+dig @192.168.10.10 doubleclick.net +short   # expect 0.0.0.0 (blocked)
+dig @192.168.10.10 example.com +short       # expect a real IP
 ```
 
 ---

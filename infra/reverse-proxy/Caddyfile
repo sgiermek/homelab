@@ -64,3 +64,8 @@ slzb.lan {
     reverse_proxy 192.168.30.50
 }
 
+# AdGuard Home (na razie host/IP – host network)
+adguard.lan {
+    reverse_proxy 192.168.10.10:3005
+}
+

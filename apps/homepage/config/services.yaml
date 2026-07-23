@@ -54,3 +54,8 @@
         href: https://vault.lan
         icon: vaultwarden.png
         description: Password manager
+
+    - AdGuard Home:
+        href: https://adguard.lan
+        icon: adguard-home.png
+        description: DNS ad/tracker blocking
