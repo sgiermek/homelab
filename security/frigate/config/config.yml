@@ -15,7 +15,7 @@ detectors:
 detect:
   enabled: true
   width: 320
-  height: 320
+  height: 260
   fps: 5
 
 # Disk on this host is tight (~35GB free) - only record around motion,
@@ -54,6 +54,6 @@ cameras:
             - record
     detect:
       width: 320
-      height: 320
+      height: 260
       fps: 5
 version: 0.17-0
