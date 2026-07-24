@@ -36,8 +36,8 @@ must never be committed.
 | Docker | Container runtime |
 | Docker Compose | Service orchestration |
 | Caddy | Reverse proxy + internal TLS |
-| dnsmasq | Local DNS resolver (`.lan` wildcard, DHCP-facing DNS) |
-| AdGuardHome | DNS-level ad/tracker filtering (upstream of dnsmasq) |
+| AdGuardHome | LAN DNS: ad/tracker filtering + wildcard `.lan` |
+| Tailscale | Remote access (subnet router + split DNS) |
 | Homepage | Service dashboard |
 | Portainer | Docker management |
 | Grafana | Monitoring and dashboards |
@@ -90,23 +90,27 @@ docker network inspect homelab
 
 # DNS Architecture
 
-## Local DNS
+## Single DNS entry point: AdGuardHome
 
-Local DNS is provided by dnsmasq.
+AdGuardHome (Docker, `network_mode: host`) is the only DNS server on the LAN. It listens on `192.168.10.10:53` and `127.0.0.1:53`, and DHCP (Omada) hands out `192.168.10.10` as the sole DNS server.
 
-Configuration:
+Resulting chain:
 
-```ini
-local=/lan/
-domain=lan
+```text
+client -> AdGuardHome (192.168.10.10:53) -> *.lan? -> DNS rewrite: 192.168.10.10
+                                          -> else  -> Quad9 (DoH), filtered
 ```
+
+Because clients query AdGuardHome directly, its dashboard shows real per-device stats.
+
+No secondary/public DNS is configured in DHCP on purpose: a public fallback (e.g. `1.1.1.1`) makes macOS/iOS randomly send queries there, which breaks `.lan` resolution intermittently. Trade-off: if `dusty` is down, LAN clients have no DNS until it's back (set `1.1.1.1` manually in an emergency).
 
 ## Wildcard DNS
 
-All `*.lan` domains resolve automatically to the HomeLab host:
+All `*.lan` domains resolve to the HomeLab host via an AdGuardHome DNS rewrite (Filters -> DNS rewrites):
 
-```ini
-address=/.lan/192.168.10.10
+```text
+*.lan -> 192.168.10.10
 ```
 
 Example:
@@ -131,39 +135,46 @@ Benefits:
 - no manual DNS entries
 - adding a new service requires only a Caddy route
 - consistent local naming convention
+- works identically over Tailscale (see Remote Access)
 
 Test:
 
 ```bash
 resolvectl query vault.lan
-```
-
-## Upstream / Ad-Blocking
-
-dnsmasq owns port 53 and stays the single DNS entry point for the LAN (DHCP hands out `192.168.10.10` as primary DNS). Everything that isn't `.lan` is forwarded to AdGuardHome instead of going straight to a public resolver:
-
-```ini
-server=192.168.10.10#55
-```
-
-AdGuardHome (Docker, `network_mode: host`) listens on port `55` (not `53`, since dnsmasq already owns that port on the host) and forwards filtered queries upstream to Quad9 over DoH.
-
-Resulting chain:
-
-```text
-client -> dnsmasq (192.168.10.10:53) -> .lan? -> answer locally
-                                      -> else  -> AdGuardHome (192.168.10.10:55) -> Quad9 (DoH)
-```
-
-Known limitation: AdGuardHome sees all forwarded queries as coming from dnsmasq, not the original client IP, so its per-device stats/dashboard aren't meaningful — filtering itself is unaffected.
-
-Resilience: Omada DHCP is configured with a secondary DNS server (`1.1.1.1`) so LAN clients still get (unfiltered) DNS if `dusty` is down.
-
-Test:
-
-```bash
 dig @192.168.10.10 doubleclick.net +short   # expect 0.0.0.0 (blocked)
 dig @192.168.10.10 example.com +short       # expect a real IP
+```
+
+## dnsmasq (retired)
+
+dnsmasq previously owned port 53 (`.lan` wildcard + forwarding). It is now `disabled` but still installed as a rollback path:
+
+```bash
+# rollback: AGH back to port 55 (edit confdir/AdGuardHome.yaml), then:
+sudo systemctl enable --now dnsmasq
+```
+
+Note for AdGuardHome config: `use_private_ptr_resolvers` must stay `false` — the host's stub resolver (127.0.0.53) forwards back to AGH, so PTR lookups through it would loop.
+
+---
+
+# Remote Access (Tailscale)
+
+`dusty` is a Tailscale subnet router advertising the LAN subnets (approved in the admin console: `192.168.10.0/24`, `192.168.20.0/24`, `192.168.30.0/24`).
+
+Split DNS is configured in the Tailscale admin console (DNS -> Nameservers):
+
+```text
+domain "lan" -> 192.168.10.10
+```
+
+Effect: any device with Tailscale connected resolves `*.lan` through AdGuardHome and reaches services via the subnet route — the same `https://service.lan` URLs work at home and remotely. No ports or IPs to remember.
+
+Test (on a device with Tailscale connected, outside the LAN):
+
+```bash
+dig grafana.lan +short   # expect 192.168.10.10
+open https://home.lan    # Homepage dashboard
 ```
 
 ---
