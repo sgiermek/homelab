@@ -40,7 +40,7 @@
         icon: zigbee2mqtt.png
 
     - SLZB-06M:
-        href: http://slzb.lan
+        href: https://slzb.lan
         icon: zigbee.png
 
 
