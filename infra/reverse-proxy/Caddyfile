@@ -1,71 +1,70 @@
 {
-    local_certs
+	local_certs
 }
 
 # Homepage
 home.lan, homelab.lan, links.lan {
-    reverse_proxy homepage:3000
+	reverse_proxy homepage:3000
 }
 
 # Jenkins (na razie host/IP)
 jenkins.lan {
-    reverse_proxy 192.168.10.10:8080
+	reverse_proxy 192.168.10.10:8080
 }
 
 # Home Assistant (na razie host/IP – host network)
 ha.lan {
-    reverse_proxy 192.168.10.10:8123
+	reverse_proxy 192.168.10.10:8123
 }
 
 # Omada (Docker DNS)
 omada.lan {
-    reverse_proxy 192.168.10.10:8043 {
-        transport http {
-            tls_insecure_skip_verify
-        }
-    }
+	reverse_proxy 192.168.10.10:8043 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
 }
 
 # Vault
 vault.lan {
-    reverse_proxy vaultwarden:80
+	reverse_proxy vaultwarden:80
 }
 
 # Grafana (do migracji później)
 grafana.lan {
-    reverse_proxy 192.168.10.10:3000
+	reverse_proxy 192.168.10.10:3000
 }
 
 # Portainer (Docker DNS + TLS skip)
 portainer.lan {
-    reverse_proxy https://portainer:9443 {
-        transport http {
-            tls_insecure_skip_verify
-        }
-    }
+	reverse_proxy https://portainer:9443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
 }
 
 # Zigbee2MQTT (Docker DNS)
 zigbee.lan {
-    reverse_proxy zigbee2mqtt:8099
+	reverse_proxy zigbee2mqtt:8099
 }
 
 # Frigate (Docker DNS, self-signed TLS to Frigate's own auth proxy)
 frigate.lan {
-    reverse_proxy https://frigate:8971 {
-        transport http {
-            tls_insecure_skip_verify
-        }
-    }
+	reverse_proxy https://frigate:8971 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
 }
 
 # SLZB-06M (device poza Dockerem)
 slzb.lan {
-    reverse_proxy 192.168.30.50
+	reverse_proxy 192.168.30.50
 }
 
 # AdGuard Home (na razie host/IP – host network)
 adguard.lan {
-    reverse_proxy 192.168.10.10:3005
+	reverse_proxy 192.168.10.10:3005
 }
-
