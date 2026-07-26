@@ -35,10 +35,14 @@ Many runtime configs are root-owned (AGH `confdir/AdGuardHome.yaml`, HA `.storag
 
 - Storage mode: `/config/.storage/lovelace.lovelace` (main "Przegląd"), `lovelace.map`, registry `lovelace_dashboards`. JSON, `data.config.views[]`.
 - Edits require HA container stop → write → start (~1 min outage). UI edits overwrite the file — coordinate with user.
+- Faster iteration without a restart: in a logged-in browser tab run `hass = document.querySelector('home-assistant').hass`, then `hass.callWS({type:'lovelace/config', url_path:null})` / `{type:'lovelace/config/save', url_path:null, config}` — same path the UI uses.
+- Prototype a card risk-free: edit mode → add card → "Edytor konfiguracji YAML", inject YAML by setting `.value` on the `ha-code-editor` element and dispatching `value-changed`; the live preview renders it. Cancel to leave the stored config untouched.
 - Verify entity preservation programmatically (diff entity_id sets before/after).
 - Daily HA backup exists; `.storage` is included.
 - Style: native cards only (no HACS resources installed) — sections layout, tile cards, badges; Polish labels; mobile-first (used mainly on phones).
 - Gotchas (HA 2026.7): legacy cards (`sensor`, …) with `grid_options` break the whole sections view (renders blank) — use them WITHOUT grid_options; `gauge` accepts `var(--*-color)` in segments; views lazy-load slowly after HA restart (blank view ≠ broken — wait ~10 s and hard-reload before diagnosing); dashboard build script lives in session scratchpad `build_dashboard.py` pattern — programmatic transform + entity-set assert.
+- Markdown card HTML: DOMPurify strips `style` and `class`, so no CSS-based layout. What survives: `<font size="1..7" color="#hex">`, `<big>`, `<small>`, `<sub>`, `<b>`, `<mark>`, `<table>` (with `align` on `td`), `<hr>`, `<img>`, `<ha-icon icon="mdi:…">`, `<ha-alert>`. `<svg>` is dropped entirely. Colour an `ha-icon` by wrapping it in `<font color>` (it inherits `currentColor`). Single newlines become `<br>`. Templates have no history/statistics access — a sparkline must come from a `tile` card's `trend-graph` feature or the legacy `sensor` card.
+- Big-number sensor cards ("Czujniki" view, added 2026-07-26): markdown card (Jinja → `<font size="7">` value, humidity, Polish relative time from `last_reported`, colour-coded comfort label) + `tile` with `trend-graph` feature and `grid_options: {columns: 12, rows: 2}` underneath, one grid section per sensor.
 - Zigbee2MQTT has `device_options: retain: true` (added 2026-07-26) so states survive HA restarts — keep it when editing z2m config.
 
 ## Conventions
