@@ -480,3 +480,13 @@ docker restart reverse-proxy
 - Service discovery through DNS
 - Minimal host dependencies
 - Container-first architecture
+
+---
+
+# Claude Code / Tooling
+
+Operational runbooks for this homelab live as Claude Code skills under `.claude/skills/`.
+
+- `.claude/skills/homelab/` — SSH access, safe edit patterns for root-owned configs, HA dashboard procedure, DNS/Tailscale notes, commit conventions.
+
+On the work machine the repo is cloned locally and each skill directory is symlinked into `~/.claude/skills/` so it is available globally to Claude Code (and project-scoped when a session runs inside this repo). The homelab server (`dusty`) does not need these skills — Claude Code runs on the work machine — but may pull them harmlessly. Edit skills in the local clone, then commit and push from there.
