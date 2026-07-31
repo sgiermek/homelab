@@ -44,6 +44,17 @@ Many runtime configs are root-owned (AGH `confdir/AdGuardHome.yaml`, HA `.storag
 - Markdown card HTML: DOMPurify strips `style` and `class`, so no CSS-based layout. What survives: `<font size="1..7" color="#hex">`, `<big>`, `<small>`, `<sub>`, `<b>`, `<mark>`, `<table>` (with `align` on `td`), `<hr>`, `<img>`, `<ha-icon icon="mdi:…">`, `<ha-alert>`. `<svg>` is dropped entirely. Colour an `ha-icon` by wrapping it in `<font color>` (it inherits `currentColor`). Single newlines become `<br>`. Templates have no history/statistics access — a sparkline must come from a `tile` card's `trend-graph` feature or the legacy `sensor` card.
 - Big-number sensor cards ("Czujniki" view, added 2026-07-26): markdown card (Jinja → `<font size="7">` value, humidity, Polish relative time from `last_reported`, colour-coded comfort label) + `tile` with `trend-graph` feature and `grid_options: {columns: 12, rows: 2}` underneath, one grid section per sensor.
 - Zigbee2MQTT has `device_options: retain: true` (added 2026-07-26) so states survive HA restarts — keep it when editing z2m config.
+- A markdown card whose template errors renders as an **empty box**, not an error — test the content first with `hass.callApi('POST','template',{template})`, which returns the Jinja error. Markdown/graph cards also load a few seconds after the rest of the view; screenshot twice before calling one broken.
+
+## HA YAML config (gitignored, so it is not recoverable from the repo)
+
+- `configuration.yaml` / `templates.yaml` / `automations.yaml` / `scripts.yaml` can be appended to while the container runs; then `template.reload` (or `automation.reload`, …) via `hass.callService` — no restart. **New top-level keys** (`input_number:`, `timer:`, a new `sensor:` platform) do need a restart.
+- Renaming a template entity in YAML does **not** change the displayed name once it is registered — set the name via `hass.callWS({type:'config/entity_registry/update', entity_id, name})`, and keep the YAML in sync.
+- YAML `input_number` helpers come up at their **minimum** on first creation (no `initial:`, because `initial` would overwrite the user's value on every restart) — set the intended value once via `input_number.set_value` after the first start.
+- Trigger-based template sensors: Zigbee sensors report late after a restart, so a `homeassistant: start` trigger renders with fallbacks — guard with `wait_template` + `{{ this.state }}`.
+- `as_datetime` raises on a `None` attribute (e.g. `timer.finishes_at` while idle) — guard before piping.
+- Automations named in Polish get `entity_id`s derived from the alias, diacritics stripped (`automation.basen_koniec_biegu_recznego`).
+- Non-trivial automation designs are documented in `automation/homeassistant/README.md` (tracked) — update it when the design changes.
 
 ## Conventions
 

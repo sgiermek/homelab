@@ -41,7 +41,7 @@ must never be committed.
 | Homepage | Service dashboard |
 | Portainer | Docker management |
 | Grafana | Monitoring and dashboards |
-| Home Assistant | Home automation |
+| Home Assistant | Home automation ([details](automation/homeassistant/README.md)) |
 | Mosquitto | MQTT broker |
 | Zigbee2MQTT | Zigbee integration |
 | Omada Controller | Network management |
