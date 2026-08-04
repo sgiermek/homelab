@@ -34,9 +34,12 @@ Self-healing — manual runs count towards the budget, and a restart or power cu
    11:00, 14:00 and on correction change):
    `turnovers = clamp(1.0 + (T_water − 16) × 0.16, 1.0 … 3.5)`, `target = 1.5 h × turnovers`,
    plus up to +1 h scaled by the PV day forecast (`energy_production_today / 45 kWh` — a direct proxy
-   for how much heat the solar foil collects), +0.5 h when forecast air max ≥ 26 °C, −0.5 h on a
+   for how much heat the solar foil collects), +0.5 h when the air max ≥ 26 °C, −0.5 h on a
    rainy/cold day, plus the manual correction. Clamped to 1.5–6 h; 0 when water < 12 °C or outside
    April–October.
+   Air temperature is `max(forecast day max, sensor.th_11_temperature)`: TH_11 sits in the shade all
+   day and is verified against a mercury thermometer, but at 08:00 the day's real maximum is not known
+   yet — taking the larger of the two lets the live reading only correct the plan upwards.
 2. **Timing** (`sensor.basen_start_filtracji`): the block is centred 45 min *after* solar noon, or
    after the PV peak if that falls later — that is when the water under the foil is warmest and PV
    output is high. Clamped into the 09:00–20:00 window.
